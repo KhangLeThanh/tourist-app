@@ -2,38 +2,88 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
-  StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
+import { TextInput } from "react-native-paper";
 import { fetchPlaces, Place } from "../api/geoapify";
+import { fetchLocationResult, LocationSuggestion } from "../api/geoLocation";
+import { useDebounce } from "../hooks/useDebounce";
+import { globalStyles } from "../styles/globalStyles";
 
 const HomeScreen: React.FC = () => {
-  const [places, setPlaces] = useState<Place[]>([]);
+  const [restaurants, setRestaurants] = useState<Place[]>([]);
+  const [location, setLocation] = useState<string>("");
+  const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
+  const [selectedPlaces, setSelectedPlaces] = useState<LocationSuggestion>();
   const [loading, setLoading] = useState(true);
+  const debouncedQuery = useDebounce(location, 600);
 
+  const handleSearch = async (text: string) => {
+    setLocation(text);
+  };
   useEffect(() => {
-    const loadPlaces = async () => {
+    const fetchLocation = async () => {
+      if (!debouncedQuery.trim() || debouncedQuery.length < 2) {
+        setSuggestions([]);
+        return;
+      }
+      const results = await fetchLocationResult(debouncedQuery);
+      setSuggestions(results);
+    };
+    fetchLocation();
+  }, [debouncedQuery]);
+  useEffect(() => {
+    const loadRestaurances = async () => {
       setLoading(true);
-      const data = await fetchPlaces(60.1695, 24.9384);
-      setPlaces(data);
+      if (selectedPlaces) {
+        const data = await fetchPlaces(selectedPlaces.lat, selectedPlaces.lon);
+        setRestaurants(data);
+      }
       setLoading(false);
     };
-    loadPlaces();
-  }, []);
+    loadRestaurances();
+  }, [selectedPlaces]);
 
   if (loading) return <ActivityIndicator size="large" style={{ flex: 1 }} />;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Nearby Restaurants</Text>
+    <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Find Restaurants</Text>
+
+      <TextInput
+        style={globalStyles.input}
+        placeholder="Enter area or city name"
+        value={location}
+        onChangeText={handleSearch}
+      />
+      {suggestions.length > 0 && (
+        <View style={globalStyles.dropdown}>
+          <FlatList
+            data={suggestions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={globalStyles.suggestion}
+                onPress={() => {
+                  setSelectedPlaces(item);
+                  setSuggestions([]);
+                }}
+              >
+                <Text>{item.formatted}</Text>
+              </TouchableOpacity>
+            )}
+          />
+        </View>
+      )}
       <FlatList
-        data={places}
+        data={restaurants}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text style={styles.cat}>{item.categories}</Text>
+          <View style={globalStyles.item}>
+            <Text style={globalStyles.name}>{item.name}</Text>
+            <Text style={globalStyles.address}>{item.address_line2}</Text>
           </View>
         )}
       />
@@ -42,16 +92,3 @@ const HomeScreen: React.FC = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: "#fff" },
-  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
-  item: {
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-  },
-  name: { fontSize: 18, fontWeight: "600" },
-  cat: { fontSize: 14, color: "#555" },
-});
