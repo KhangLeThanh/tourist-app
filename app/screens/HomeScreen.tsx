@@ -95,8 +95,11 @@ const HomeScreen: React.FC = () => {
           data={restaurants}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={globalStyles.item}>
-              <Text style={globalStyles.name}>{item.name}</Text>
+            <View style={globalStyles.card}>
+              <View style={globalStyles.cardHeader}>
+                <Text style={globalStyles.name}>{item.name}</Text>
+                <MaterialIcons name="restaurant" size={20} color="#f57c00" />
+              </View>
               <Text style={globalStyles.address}>{item.address_line2}</Text>
             </View>
           )}

@@ -7,88 +7,89 @@ interface Styles {
   input: TextStyle;
   icon: ViewStyle;
   suggestion: ViewStyle;
-  placeItem: ViewStyle;
-  placeName: TextStyle;
+  dropdown: ViewStyle;
+  card: ViewStyle;
+  cardHeader: ViewStyle;
   name: TextStyle;
   address: TextStyle;
-  item: ViewStyle;
-  dropdown: ViewStyle;
 }
 
 export const globalStyles = StyleSheet.create<Styles>({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#fefefe",
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+    color: "#333",
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    position: "relative",
-    marginBottom: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    borderRadius: 30,
+    paddingHorizontal: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 3,
   },
   input: {
     flex: 1,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    paddingRight: 35, // leave space for icon
+    height: 50,
+    fontSize: 16,
+    color: "#333",
   },
   icon: {
+    marginLeft: 10,
+  },
+  dropdown: {
     position: "absolute",
-    right: 10,
+    top: 70, // below input container
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    maxHeight: 250,
     zIndex: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    paddingVertical: 5,
   },
   suggestion: {
-    padding: 10,
+    padding: 12,
     borderBottomWidth: 1,
-    borderColor: "#eee",
+    borderBottomColor: "#eee",
   },
-  placeItem: {
-    marginTop: 10,
-    backgroundColor: "#f8f8f8",
-    padding: 10,
-    borderRadius: 6,
+  card: {
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    padding: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 3,
   },
-  placeName: {
-    fontWeight: "bold",
-    fontSize: 16,
+  cardHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
   },
   name: {
     fontSize: 18,
     fontWeight: "600",
+    color: "#333",
   },
   address: {
     fontSize: 14,
-    color: "#555",
-  },
-  item: {
-    marginBottom: 15,
-    padding: 10,
-    backgroundColor: "#f0f0f0",
-    borderRadius: 8,
-  },
-  dropdown: {
-    position: "absolute",
-    top: 55,
-    left: 0,
-    right: 0,
-    backgroundColor: "#fff",
-    borderRadius: 8,
-    maxHeight: 200,
-    zIndex: 999,
-    elevation: 5, // Android shadow
-    shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
+    color: "#777",
   },
 });

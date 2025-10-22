@@ -13,8 +13,8 @@ export default function TabsLayout() {
         options={{
           title: "Restaurants",
           tabBarLabel: "Restaurants",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="cutlery" color={color} size={size} />
+          tabBarIcon: ({ size }) => (
+            <FontAwesome name="cutlery" color="#f57c00" size={size} />
           ),
         }}
       />
@@ -23,8 +23,8 @@ export default function TabsLayout() {
         options={{
           title: "Accommodations",
           tabBarLabel: "Accommodations",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="bed" color={color} size={size} />
+          tabBarIcon: ({ size }) => (
+            <FontAwesome name="bed" color="#f57c00" size={size} />
           ),
         }}
       />
