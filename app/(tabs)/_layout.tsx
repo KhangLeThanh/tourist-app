@@ -5,7 +5,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false, // hides the top header
+        headerShown: false,
       }}
     >
       <Tabs.Screen
@@ -19,7 +19,7 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="accommodations"
+        name="Accommodations"
         options={{
           title: "Accommodations",
           tabBarLabel: "Accommodations",

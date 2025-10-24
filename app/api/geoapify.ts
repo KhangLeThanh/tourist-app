@@ -12,18 +12,16 @@ export type Place = {
 export const fetchPlaces = async (
   lat: number,
   lon: number,
+  type: string,
   radius: number = 5000
 ): Promise<Place[]> => {
   try {
-    const res = await axios.get(
-      `${BASE_URL}/v2/places/?categories=catering.restaurant`,
-      {
-        params: {
-          filter: `circle:${lon},${lat},${radius}`,
-          apiKey: API_KEY,
-        },
-      }
-    );
+    const res = await axios.get(`${BASE_URL}/v2/places/?categories=${type}`, {
+      params: {
+        filter: `circle:${lon},${lat},${radius}`,
+        apiKey: API_KEY,
+      },
+    });
 
     // Map API response to Place[]
     return res.data.features.map((f: any) => ({
