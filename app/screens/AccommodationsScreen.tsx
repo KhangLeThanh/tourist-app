@@ -8,12 +8,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import ModalMap from "../../components/ModalMap";
 import { fetchPlaces, Place } from "../api/geoapify";
 import { fetchLocationResult } from "../api/geoLocation";
 import { useSearch } from "../context/SearchContext";
 import { useDebounce } from "../hooks/useDebounce";
 import { globalStyles } from "../styles/globalStyles";
-
+const [selectedAccomodation, setSelecteAccomodation] = useState<Place | null>(
+  null
+);
 const AccommodationsScreen: React.FC = () => {
   const [accomodations, setAccomodations] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
@@ -85,16 +88,22 @@ const AccommodationsScreen: React.FC = () => {
           data={accomodations}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={globalStyles.card}>
-              <View style={globalStyles.cardHeader}>
-                <Text style={globalStyles.name}>{item.name}</Text>
-                <MaterialIcons name="bed" size={20} color="#f57c00" />
+            <TouchableOpacity onPress={() => setSelecteAccomodation(item)}>
+              <View style={globalStyles.card}>
+                <View style={globalStyles.cardHeader}>
+                  <Text style={globalStyles.name}>{item.name}</Text>
+                  <MaterialIcons name="bed" size={20} color="#f57c00" />
+                </View>
+                <Text style={globalStyles.address}>{item.address_line2}</Text>
               </View>
-              <Text style={globalStyles.address}>{item.address_line2}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
+      <ModalMap
+        item={selectedAccomodation}
+        onClose={() => setSelecteAccomodation(null)}
+      />
     </View>
   );
 };

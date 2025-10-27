@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import ModalMap from "../../components/ModalMap";
 import { fetchPlaces, Place } from "../api/geoapify";
 import { fetchLocationResult } from "../api/geoLocation";
 import { useSearch } from "../context/SearchContext";
@@ -16,6 +17,10 @@ import { globalStyles } from "../styles/globalStyles";
 
 const HomeScreen: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Place[]>([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Place | null>(
+    null
+  );
+
   const [loading, setLoading] = useState(true);
   const {
     location,
@@ -53,7 +58,6 @@ const HomeScreen: React.FC = () => {
     };
     loadRestaurances();
   }, [selectedPlace]);
-
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Find Restaurants</Text>
@@ -85,16 +89,22 @@ const HomeScreen: React.FC = () => {
           data={restaurants}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={globalStyles.card}>
-              <View style={globalStyles.cardHeader}>
-                <Text style={globalStyles.name}>{item.name}</Text>
-                <MaterialIcons name="restaurant" size={20} color="#f57c00" />
+            <TouchableOpacity onPress={() => setSelectedRestaurant(item)}>
+              <View style={globalStyles.card}>
+                <View style={globalStyles.cardHeader}>
+                  <Text style={globalStyles.name}>{item.name}</Text>
+                  <MaterialIcons name="restaurant" size={20} color="#f57c00" />
+                </View>
+                <Text style={globalStyles.address}>{item.address_line2}</Text>
               </View>
-              <Text style={globalStyles.address}>{item.address_line2}</Text>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
+      <ModalMap
+        item={selectedRestaurant}
+        onClose={() => setSelectedRestaurant(null)}
+      />
     </View>
   );
 };
