@@ -6,7 +6,7 @@ import {
 } from "../api/favouriteApi";
 
 export type FavouriteItem = {
-  id: number;
+  id: string;
   name: string;
   address: string;
   type: string;
@@ -16,15 +16,15 @@ export const useFavorites = () => {
   const [favourites, setFavourites] = useState<FavouriteItem[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const addItem = async (name: string, address: string, type: string) => {
+  const addItem = async ({ id, name, address, type }: FavouriteItem) => {
     try {
-      const newFav = await addFavourite(name, address, type);
+      const newFav = await addFavourite(id, name, address, type);
       setFavourites((prev) => [newFav, ...prev]);
     } catch (err) {
       console.error("Failed to remove favourite:", err);
     }
   };
-  const removeItem = async (id: number) => {
+  const removeItem = async (id: string) => {
     try {
       await removeFavourite(id);
     } catch (err) {

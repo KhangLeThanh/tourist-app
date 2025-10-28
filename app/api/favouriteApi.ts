@@ -7,15 +7,16 @@ export const getFavourites = async () => {
 };
 
 export const addFavourite = async (
+  id: string,
   name: string,
   address: string,
   type: string
 ) => {
-  const res = await axios.post(BACKEND_URL, { name, address, type });
+  const res = await axios.post(BACKEND_URL, { id, name, address, type });
   return res.data;
 };
 
-export const removeFavourite = async (id: number) => {
+export const removeFavourite = async (id: string) => {
   const res = await axios.delete(`${BACKEND_URL}/${id}`);
   return res.data;
 };
