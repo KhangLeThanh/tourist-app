@@ -31,6 +31,16 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="Favourite"
+        options={{
+          title: "Favourite",
+          tabBarLabel: "Favourite",
+          tabBarIcon: ({ size }) => (
+            <FontAwesome name="heart" color="#f57c00" size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
