@@ -15,9 +15,10 @@ const FavouriteScreen: React.FC = () => {
 
   return (
     <View style={globalStyles.container}>
+      <Text style={globalStyles.title}>Your Favourite List </Text>
       {loading ? (
         <ActivityIndicator size="large" style={{ flex: 1 }} />
-      ) : (
+      ) : favourites ? (
         <FlatList
           data={favourites}
           keyExtractor={(item) => item.id}
@@ -41,6 +42,8 @@ const FavouriteScreen: React.FC = () => {
             </TouchableOpacity>
           )}
         />
+      ) : (
+        <Text style={globalStyles.name}>No favourites</Text>
       )}
     </View>
   );
