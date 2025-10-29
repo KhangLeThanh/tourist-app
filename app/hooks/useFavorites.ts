@@ -1,15 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   addFavourite,
   getFavourites,
   removeFavourite,
 } from "../api/favouriteApi";
+import { PlaceType } from "../enum";
 
 export type FavouriteItem = {
   id: string;
   name: string;
   address: string;
-  type: string;
+  type: PlaceType;
 };
 
 export const useFavorites = () => {
@@ -33,17 +34,23 @@ export const useFavorites = () => {
       console.error("Failed to remove favourite:", err);
     }
   };
-  const getItems = async () => {
-    setLoading(true);
+  useEffect(() => {
+    const getItems = async () => {
+      setLoading(true);
 
-    try {
-      const data = await getFavourites();
-      setFavourites(data);
-    } catch (err) {
-      console.error("Failed to fetch todos:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-  return { addItem, removeItem, getItems, loading, favourites };
+      try {
+        const data = await getFavourites();
+        console.log("test data", data);
+        setFavourites(data);
+      } catch (err) {
+        console.error("Failed to fetch todos:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getItems();
+  }, []);
+
+  return { addItem, removeItem, loading, favourites };
 };

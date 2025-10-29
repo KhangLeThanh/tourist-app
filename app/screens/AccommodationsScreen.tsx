@@ -1,5 +1,4 @@
 import SearchBar from "@/components/SearchBar";
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -9,11 +8,12 @@ import {
   View,
 } from "react-native";
 import ModalMap from "../../components/ModalMap";
+import PlaceCard from "../../components/PlaceCard";
 import { fetchPlaces, Place } from "../api/geoapify";
 import { fetchLocationResult } from "../api/geoLocation";
 import { useSearch } from "../context/SearchContext";
+import { PlaceType } from "../enum";
 import { useDebounce } from "../hooks/useDebounce";
-import { useFavorites } from "../hooks/useFavorites";
 import { globalStyles } from "../styles/globalStyles";
 const [selectedAccomodation, setSelecteAccomodation] = useState<Place | null>(
   null
@@ -29,7 +29,6 @@ const AccommodationsScreen: React.FC = () => {
     setSelectedPlace,
   } = useSearch();
   const debouncedQuery = useDebounce(location, 600);
-  const { addItem, removeItem, favourites } = useFavorites();
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -86,42 +85,10 @@ const AccommodationsScreen: React.FC = () => {
       {loading ? (
         <ActivityIndicator size="large" style={{ flex: 1 }} />
       ) : (
-        <FlatList
-          data={accomodations}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => {
-            const isFavorite = favourites.some((fav) => fav.id === item.id);
-            return (
-              <TouchableOpacity onPress={() => setSelecteAccomodation(item)}>
-                <View style={globalStyles.card}>
-                  <View style={globalStyles.cardHeader}>
-                    <Text style={globalStyles.name}>{item.name}</Text>
-                    <MaterialIcons name="bed" size={20} color="#f57c00" />
-                    <TouchableOpacity
-                      onPress={() =>
-                        isFavorite
-                          ? removeItem(item.id)
-                          : addItem({
-                              id: item.id,
-                              name: item.name,
-                              address: item.address_line2,
-                              type: "accomodation",
-                            })
-                      }
-                      style={{ marginLeft: 10 }}
-                    >
-                      <FontAwesome
-                        name={isFavorite ? "heart" : "heart-o"}
-                        size={20}
-                        color={isFavorite ? "red" : "#555"}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={globalStyles.address}>{item.address_line2}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          }}
+        <PlaceCard
+          place={accomodations}
+          setSelectedPlace={setSelecteAccomodation}
+          typePlace={PlaceType.hotel}
         />
       )}
       <ModalMap
