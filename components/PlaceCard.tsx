@@ -1,4 +1,4 @@
-import { useFavorites } from "@/app/hooks/useFavorites";
+import { useFavorites } from "@/app/context/FavouriteContext";
 import { globalStyles } from "@/app/styles/globalStyles";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import React from "react";

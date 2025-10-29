@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import "react-native-reanimated";
+import { FavouriteProvider } from "../app/context/FavouriteContext";
 import { SearchProvider } from "../app/context/SearchContext";
 
 export {
@@ -41,14 +42,16 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <SearchProvider>
-      <Stack>
-        <Stack.Screen
-          name="screens/HomeScreen"
-          options={{ headerShown: false, title: "Home" }}
-        />
-      </Stack>
-      <StatusBar style="auto" />
-    </SearchProvider>
+    <FavouriteProvider>
+      <SearchProvider>
+        <Stack>
+          <Stack.Screen
+            name="screens/HomeScreen"
+            options={{ headerShown: false, title: "Home" }}
+          />
+        </Stack>
+        <StatusBar style="auto" />
+      </SearchProvider>
+    </FavouriteProvider>
   );
 }

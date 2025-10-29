@@ -1,4 +1,10 @@
-import { useEffect, useState } from "react";
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   addFavourite,
   getFavourites,
@@ -12,15 +18,25 @@ export type FavouriteItem = {
   address: string;
   type: PlaceType;
 };
+type FavouriteContextProps = {
+  favourites: FavouriteItem[];
+  loading: boolean;
+  addItem: (item: FavouriteItem) => Promise<void>;
+  removeItem: (id: string) => Promise<void>;
+};
 
-export const useFavorites = () => {
+const FavouriteContext = createContext<FavouriteContextProps | undefined>(
+  undefined
+);
+
+export const FavouriteProvider = ({ children }: { children: ReactNode }) => {
   const [favourites, setFavourites] = useState<FavouriteItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   const addItem = async ({ id, name, address, type }: FavouriteItem) => {
+    setFavourites((prev) => [{ id, name, address, type }, ...prev]);
     try {
-      const newFav = await addFavourite(id, name, address, type);
-      setFavourites((prev) => [newFav, ...prev]);
+      await addFavourite(id, name, address, type);
     } catch (err) {
       console.error("Failed to remove favourite:", err);
     }
@@ -28,16 +44,14 @@ export const useFavorites = () => {
   const removeItem = async (id: string) => {
     try {
       await removeFavourite(id);
-    } catch (err) {
       setFavourites((prev) => prev.filter((fav) => fav.id !== id));
-
+    } catch (err) {
       console.error("Failed to remove favourite:", err);
     }
   };
   useEffect(() => {
     const getItems = async () => {
       setLoading(true);
-
       try {
         const data = await getFavourites();
         console.log("test data", data);
@@ -51,6 +65,24 @@ export const useFavorites = () => {
 
     getItems();
   }, []);
+  return (
+    <FavouriteContext.Provider
+      value={{
+        favourites,
+        loading,
+        addItem,
+        removeItem,
+      }}
+    >
+      {children}
+    </FavouriteContext.Provider>
+  );
+};
 
-  return { addItem, removeItem, loading, favourites };
+export const useFavorites = () => {
+  const context = useContext(FavouriteContext);
+  if (!context) {
+    throw new Error("useFavourites must be used within a FavouriteProvider");
+  }
+  return context;
 };

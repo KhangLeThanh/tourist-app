@@ -1,4 +1,6 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { useFavorites } from "@/app/context/FavouriteContext";
+import { globalStyles } from "@/app/styles/globalStyles";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import {
   ActivityIndicator,
@@ -7,13 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useFavorites } from "../hooks/useFavorites";
-import { globalStyles } from "../styles/globalStyles";
 
 const FavouriteScreen: React.FC = () => {
-  const { addItem, removeItem, favourites, loading } = useFavorites();
-
-  console.log("test favourites", favourites);
+  const { removeItem, favourites, loading } = useFavorites();
 
   return (
     <View style={globalStyles.container}>
@@ -28,7 +26,15 @@ const FavouriteScreen: React.FC = () => {
               <View style={globalStyles.card}>
                 <View style={globalStyles.cardHeader}>
                   <Text style={globalStyles.name}>{item.name}</Text>
-                  <MaterialIcons name={item.type} size={20} color="#f57c00" />
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <MaterialIcons name={item.type} size={20} color="#f57c00" />
+                    <TouchableOpacity
+                      onPress={() => removeItem(item.id)}
+                      style={{ marginLeft: 10 }}
+                    >
+                      <FontAwesome name="heart" size={20} color="red" />
+                    </TouchableOpacity>
+                  </View>
                 </View>
                 <Text style={globalStyles.address}>{item.address}</Text>
               </View>
