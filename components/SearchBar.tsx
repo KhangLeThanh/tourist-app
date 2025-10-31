@@ -16,7 +16,7 @@ const SearchBar: React.FC = () => {
       <View style={globalStyles.inputContainer}>
         <TextInput
           style={globalStyles.input}
-          placeholder={`${location ? location : "Enter area or city name"}`}
+          placeholder="Enter area or city name"
           value={location}
           onChangeText={setLocation}
         />
