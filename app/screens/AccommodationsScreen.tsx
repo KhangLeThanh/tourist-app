@@ -1,12 +1,7 @@
 import SearchBar from "@/components/SearchBar";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
+import DropdownSuggestion from "../../components/DropdownSuggestion";
 import ModalMap from "../../components/ModalMap";
 import PlaceCard from "../../components/PlaceCard";
 import { fetchPlaces, Place } from "../api/geoapify";
@@ -15,19 +10,14 @@ import { useSearch } from "../context/SearchContext";
 import { PlaceType } from "../enum";
 import { useDebounce } from "../hooks/useDebounce";
 import { globalStyles } from "../styles/globalStyles";
+
 const [selectedAccomodation, setSelecteAccomodation] = useState<Place | null>(
   null
 );
 const AccommodationsScreen: React.FC = () => {
   const [accomodations, setAccomodations] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
-  const {
-    location,
-    suggestions,
-    setSuggestions,
-    selectedPlace,
-    setSelectedPlace,
-  } = useSearch();
+  const { location, setSuggestions, selectedPlace } = useSearch();
   const debouncedQuery = useDebounce(location, 600);
 
   useEffect(() => {
@@ -63,25 +53,7 @@ const AccommodationsScreen: React.FC = () => {
       <Text style={globalStyles.title}>Find accomodations</Text>
       <SearchBar />
 
-      {suggestions.length > 0 && (
-        <View style={globalStyles.dropdown}>
-          <FlatList
-            data={suggestions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={globalStyles.suggestion}
-                onPress={() => {
-                  setSelectedPlace(item);
-                  setSuggestions([]);
-                }}
-              >
-                <Text>{item.formatted}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
+      <DropdownSuggestion />
       {loading ? (
         <ActivityIndicator size="large" style={{ flex: 1 }} />
       ) : (

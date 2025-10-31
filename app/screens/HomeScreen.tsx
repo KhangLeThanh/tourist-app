@@ -1,12 +1,7 @@
 import SearchBar from "@/components/SearchBar";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
+import DropdownSuggestion from "../../components/DropdownSuggestion";
 import ModalMap from "../../components/ModalMap";
 import PlaceCard from "../../components/PlaceCard";
 import { fetchPlaces, Place } from "../api/geoapify";
@@ -23,13 +18,7 @@ const HomeScreen: React.FC = () => {
   );
 
   const [loading, setLoading] = useState(true);
-  const {
-    location,
-    suggestions,
-    setSuggestions,
-    selectedPlace,
-    setSelectedPlace,
-  } = useSearch();
+  const { location, setSuggestions, selectedPlace } = useSearch();
 
   const debouncedQuery = useDebounce(location, 600);
 
@@ -60,30 +49,13 @@ const HomeScreen: React.FC = () => {
     };
     loadRestaurances();
   }, [selectedPlace]);
+
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.title}>Find Restaurants</Text>
       <SearchBar />
+      <DropdownSuggestion />
 
-      {suggestions.length > 0 && (
-        <View style={globalStyles.dropdown}>
-          <FlatList
-            data={suggestions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={globalStyles.suggestion}
-                onPress={() => {
-                  setSelectedPlace(item);
-                  setSuggestions([]);
-                }}
-              >
-                <Text>{item.formatted}</Text>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
-      )}
       {loading ? (
         <ActivityIndicator size="large" style={{ flex: 1 }} />
       ) : (

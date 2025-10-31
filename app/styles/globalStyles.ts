@@ -87,6 +87,7 @@ export const globalStyles = StyleSheet.create<Styles>({
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
+    marginBottom: 4,
   },
   address: {
     fontSize: 14,
