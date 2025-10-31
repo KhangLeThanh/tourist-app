@@ -1,56 +1,87 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
+import { Text, View } from "react-native";
 
 export default function TabsLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarActiveTintColor: "#f57c00",
-        tabBarInactiveTintColor: "#aaa",
-        tabBarStyle: {
-          backgroundColor: "#fff",
-          borderTopWidth: 0,
-          elevation: 10,
-          shadowColor: "#000",
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          height: 70,
-          paddingBottom: 10,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Restaurants",
-          tabBarLabel: "Restaurants",
-          tabBarIcon: ({ size }) => (
-            <FontAwesome name="cutlery" color="#f57c00" size={size} />
-          ),
+    <>
+      <Stack.Screen options={{ headerShown: false }} />
+
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarShowLabel: false,
+          tabBarStyle: {
+            height: 60,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="Accommodations"
-        options={{
-          title: "Accommodations",
-          tabBarLabel: "Accommodations",
-          tabBarIcon: ({ size }) => (
-            <FontAwesome name="bed" color="#f57c00" size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="Favourite"
-        options={{
-          title: "Favourite",
-          tabBarLabel: "Favourite",
-          tabBarIcon: ({ size }) => (
-            <FontAwesome name="heart" color="#f57c00" size={size} />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            headerShown: false,
+            title: "Restaurants",
+            tabBarIcon: ({ color, size, focused }) => (
+              <View style={{ alignItems: "center" }}>
+                <FontAwesome
+                  name="cutlery"
+                  size={size}
+                  color={focused ? "#f57c00" : "#000"}
+                />
+                <Text
+                  style={{ fontSize: 12, color: focused ? "#f57c00" : "#000" }}
+                >
+                  Restaurants
+                </Text>
+              </View>
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="Accommodations"
+          options={{
+            headerShown: false,
+            title: "Accommodations",
+            tabBarIcon: ({ color, size, focused }) => (
+              <View style={{ alignItems: "center" }}>
+                <FontAwesome
+                  name="bed"
+                  size={size}
+                  color={focused ? "#f57c00" : "#000"}
+                />
+                <Text
+                  style={{ fontSize: 12, color: focused ? "#f57c00" : "#000" }}
+                >
+                  Accommodations
+                </Text>
+              </View>
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="Favourite"
+          options={{
+            headerShown: false,
+            title: "Favourite",
+            tabBarIcon: ({ color, size, focused }) => (
+              <View style={{ alignItems: "center" }}>
+                <FontAwesome
+                  name="heart"
+                  size={size}
+                  color={focused ? "#f57c00" : "#000"}
+                />
+                <Text
+                  style={{ fontSize: 12, color: focused ? "#f57c00" : "#000" }}
+                >
+                  Favourite
+                </Text>
+              </View>
+            ),
+          }}
+        />
+      </Tabs>
+    </>
   );
 }
