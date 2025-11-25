@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, Modal, Platform, Text, View } from "react-native";
-// import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { Place } from "../app/api/geoapify";
 
-type ModalMapProps = {
+interface ModalMapProps {
   item: Place | null;
   onClose: () => void;
-};
+}
 
 const ModalMap: React.FC<ModalMapProps> = ({ item, onClose }) => {
   if (!item) return null;
@@ -22,7 +22,7 @@ const ModalMap: React.FC<ModalMapProps> = ({ item, onClose }) => {
   return (
     <Modal visible={!!item} style={{ margin: 0 }} animationType="slide">
       <View style={{ flex: 1 }}>
-        {/* <MapView
+        <MapView
           style={{ flex: 1 }}
           initialRegion={{
             latitude: item.lat,
@@ -39,7 +39,7 @@ const ModalMap: React.FC<ModalMapProps> = ({ item, onClose }) => {
             title={item.name}
             description={item.address_line2}
           />
-        </MapView> */}
+        </MapView>
         <View style={{ padding: 16 }}>
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>{item.name}</Text>
           <Text>{item.address_line2}</Text>

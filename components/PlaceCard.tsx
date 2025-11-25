@@ -6,11 +6,11 @@ import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { Place } from "../app/api/geoapify";
 import { PlaceType } from "../app/enum";
 
-type PlaceCardProps = {
+interface PlaceCardProps {
   place: Place[];
   typePlace: PlaceType;
   setSelectedPlace: (item: Place) => void;
-};
+}
 
 const PlaceCard: React.FC<PlaceCardProps> = ({
   place,
